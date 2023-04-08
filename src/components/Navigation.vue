@@ -1,11 +1,11 @@
 <script setup>
-import routes from '../router'
+import { useRouter, useRoute } from 'vue-router'
 </script>
 
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="#" @click="test">Navbar</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -20,7 +20,7 @@ import routes from '../router'
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li v-for="m in menus" class="nav-item">
-            <router-link :to="{ name: m.text }" class="nav-link" :class="{ active: m.active, disabled: m.disable }" href="#">{{ m.text }}</router-link>
+            <router-link :to="{ name: m.name }" class="nav-link" :class="{active: m.is_active}">{{ m.caption }}</router-link>
           </li>
         </ul>
       </div>
@@ -32,12 +32,21 @@ import routes from '../router'
   export default {
     data() {
       return {
-        menus: [
-          { text: 'Home', active: true },
-          { text: 'Page1' },
-        ],
+        menus: [],
       }
     },
+    mounted() {
+      const router = useRouter();
+      router.getRoutes().forEach(i => {
+        this.menus.push({ name: i.name, caption: i.meta.caption, is_active: false });
+      });
+    },
+    watch: {
+      $route(to) {
+        const curr_menu = to.meta.caption;
+        this.menus.forEach(m => { m.is_active = m.caption == curr_menu });
+      }
+    }
   }
 </script>
 

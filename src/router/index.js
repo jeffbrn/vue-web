@@ -6,12 +6,18 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home,
+        meta: {
+          caption: 'Home'
+        },
     },
     {
       path: "/pg1",
       name: "Page1",
       component: Page,
-  },
+      meta: {
+        caption: 'Page1'
+      },
+},
 ]
 
 const router = createRouter({
